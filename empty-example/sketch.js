@@ -1,37 +1,25 @@
-function preload(){
-  sound = loadSound('assets/24_intro.mp3');
+var mic, fft;
+
+function setup() {
+   createCanvas(710,400);
+   mic = new p5.AudioIn();
+   mic.start();
+   fft = new p5.FFT();
+   fft.setInput(mic);
 }
 
-function setup(){
-  createCanvas(100,100);
-  sound.loop();
-  fft = new p5.FFT();
-}
+function draw() {
+   background(0);
 
-function draw(){
-  background(0);
+   var spectrum = fft.analyze();
 
-  var spectrum = fft.analyze(); 
-  noStroke();
-  fill(0,255,0); // spectrum is green
-  for (var i = 0; i< spectrum.length; i++){
-    var x = map(i, 0, spectrum.length, 0, width);
-    var h = -height + map(spectrum[i], 0, 255, height, 0);
-    rect(x, height, width / spectrum.length, h )
-  }
-
-  var waveform = fft.waveform();
-  beginShape();
-  stroke(255,0,0); // waveform is red
-  strokeWeight(1);
-  for (var i = 0; i< waveform.length; i++){
-    var x = map(i, 0, waveform.length, 0, width);
-    var y = map( waveform[i], 0, 255, 0, height);
-    vertex(x,y);
-  }
-  endShape();
-}
-
-function mouseClicked(){
-  sound.stop();
+   // beginShape();
+//    for (i = 0; i<spectrum.length; i++) {
+//     vertex(i, map(spectrum[i], 0, 255, height, 0) );
+//    }
+	
+   var energy = fft.getEnergy(248);
+   ellipse(width/2, constrain(height-energy*height*5, 0, height), 10, 10)
+   console.log(energy)
+   endShape();
 }
