@@ -1,4 +1,5 @@
 var mic, fft, didAnalyze;
+var filter, filterFreq, filterWidth;
 
 function setup() {
    createCanvas(710,400);
@@ -7,6 +8,10 @@ function setup() {
    fft = new p5.FFT();
    fft.setInput(mic);
    background(200);
+   
+   filter = new p5.BandPass();
+   filter.process(mic);
+   
 }
 
 function draw() {
@@ -15,7 +20,13 @@ function draw() {
 	var volume = mic.getLevel();
    var spectrum = fft.analyze();
 	
-	if ( didRiseAbove(volume) && !didAnalyze ) {
+// 	if ( didRiseAbove(volume) && !didAnalyze ) {
+
+		
+		var freq = map (80, 150);
+  		filter.freq(freq);
+  		filter.res(50);
+  		
 		background(200);
 		didAnalyze = true;
 		beginShape();
@@ -23,7 +34,9 @@ function draw() {
 			vertex(i, map(spectrum[i], 0, 255, height, 0) );
 		}
 		endShape();
-	}
+		
+		console.log(spectrum.length);
+// 	}
    
 }
 
