@@ -1,10 +1,23 @@
 <html>
   <head>
+<style>
+	div {
+		background-color:#ccc;
+	
+	}
+	item {
+		padding-left:10em;
+	}
+</style>
+
     <script language="javascript" src="../p5.js"></script>
 	<script language="javascript" src="../addons/p5.dom.js"></script>
   <script language="javascript" src="../addons/p5.sound.js"></script>
+  <script language="javascript" src="../jquery-2.1.1.min.js"></script>
   </head>
   <body>
+  	<div id="showMe" />
+  	
     <script>
 
       var mic, fft;
@@ -29,20 +42,27 @@
         avgMicLevel = getAvgMicLevel(micLevel);
         // fft bass, mid, highs
         fft.analyze();
-//         bassLevel = fft.getEnergy("bass");
-//         midLevel = fft.getEnergy("lowMid");
-//         highLevel = fft.getEnergy("mid") * 2;
+        bassLevel = Math.round (fft.getEnergy("bass"));
+        midLevel = Math.round (fft.getEnergy("lowMid"));
+        highLevel = Math.round (fft.getEnergy("mid") * 2);
+        
+        
+        
 // 		console.log(bassLevel, midLevel, highLevel);
+		var html = 	'<item>bassLevel ' + bassLevel + '</item><item>midLevel ' + midLevel + '</item><item>highLevel ' + highLevel + '</item><br />';
+		$('#showMe').html(html);
 		
-		var energy = [];
-	   energy[0] = fft.getEnergy(42);
-	   energy[1] = fft.getEnergy(47);
-	   energy[2] = fft.getEnergy(50);
-	   energy[3] = fft.getEnergy(55);
-	   energy[4] = fft.getEnergy(67);
-	   
-	   console.log(energy);
+// 		var energy = [];
+// 	   energy[0] = fft.getEnergy(42);
+// 	   energy[1] = fft.getEnergy(47);
+// 	   energy[2] = fft.getEnergy(50);
+// 	   energy[3] = fft.getEnergy(55);
+// 	   energy[4] = fft.getEnergy(67);
+// 	   
+// 	   console.log(energy);
 	   //[42, 47, 50, 55, 59, 67]
+	   
+	   //    http://p5.local.192.168.0.3.xip.io:8888/empty-example/test2.html
       }
 
       function getAvgMicLevel(inputLevel) {
